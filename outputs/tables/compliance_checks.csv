@@ -1,0 +1,5 @@
+check,description,n_cases,share_of_cases,po_value_eur
+po_after_invoice,Vendor invoiced before the PO existed,3621,0.014384230973964582,49435293.0
+paid_before_goods_receipt,Paid before goods were received (3-way match),655,0.0026019528549977356,1753787.0
+invoice_before_gr_in_after_gr_flow,Invoice booked before goods receipt (invoice-after-GR flow),0,0.0,0.0
+invoice_on_consignment,PO-level invoice on a consignment line,0,0.0,0.0

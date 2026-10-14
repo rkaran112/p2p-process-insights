@@ -1,0 +1,5 @@
+item_category,n_cases,po_after_invoice_rate,paid_before_goods_receipt_rate,invoice_before_gr_in_after_gr_flow_rate,invoice_on_consignment_rate,any_violation_rate
+2-way match,1044,0.5795019157088123,0.0,0.0,0.0,0.5795019157088123
+"3-way match, invoice after GR",15182,0.022856013700434726,6.586747464102226e-05,0.0,0.0,0.022921881175075747
+"3-way match, invoice before GR",221010,0.012076376634541423,0.002959142120266051,0.0,0.0,0.014809284647753496
+Consignment,14498,0.0,0.0,0.0,0.0,0.0

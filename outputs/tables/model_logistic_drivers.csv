@@ -1,0 +1,42 @@
+feature,coef,odds_ratio,label
+vendor_late_rate,2.3024071547133707,9.998220775494019,vendor's past late rate
+spend_area_infrequent_sklearn,-2.0269927902085536,0.1317310690633483,spend_area_infrequent_sklearn
+spend_area_Titanium Dioxides,1.3003787106301816,3.67068653243424,spend_area_Titanium Dioxides
+document_type_Framework order,-1.0011754841008815,0.3674472587988224,document_type_Framework order
+document_type_Standard PO,0.9319659944397536,2.5394969098889906,document_type_Standard PO
+item_type_Subcontracting,0.805219954565059,2.237188524535221,item_type_Subcontracting
+item_type_Service,-0.7183676704472796,0.48754744488085117,item_type_Service
+po_age_at_invoice_days,-0.6664092330381182,0.5135493068785719,days since the PO was raised
+spend_area_Logistics,0.5710020189731446,1.7700397765726457,spend_area_Logistics
+spend_area_CAPEX & SOCS,-0.5433961542468224,0.5807725062900866,spend_area_CAPEX & SOCS
+company_companyID_0000,-0.5138759243310391,0.5981726081250937,company_companyID_0000
+spend_area_Enterprise Services,-0.5045527291034112,0.603775566281883,spend_area_Enterprise Services
+"item_category_3-way match, invoice before GR",-0.49058380831709353,0.6122688421812922,"item_category_3-way match, invoice before GR"
+document_type_EC Purchase order,-0.44530743634000386,0.6406272936436336,document_type_EC Purchase order
+spend_area_Trading & End Products,0.41101900903462746,1.5083540286395039,spend_area_Trading & End Products
+item_type_Standard,-0.40664131363957495,0.6658829906181265,item_type_Standard
+log_po_value,0.33071951817615963,1.3919693154575952,PO line value (log)
+log_invoice_value,-0.32593656673194626,0.721850975345876,invoice value (log)
+spend_area_Pigments & Colorants,0.2971547243445301,1.3460235459481495,spend_area_Pigments & Colorants
+spend_area_Others,-0.26400061674831027,0.7679730660104693,spend_area_Others
+spend_area_Packaging,0.22371062395387423,1.2507090418196882,spend_area_Packaging
+log_vendor_invoices,-0.20442733164531368,0.815113972756661,vendor's past invoice volume (log)
+item_type_Third-party,-0.1982996493579663,0.8201240666647619,item_type_Third-party
+spend_area_Commodity Resins,-0.19536468264012985,0.8225346392496784,spend_area_Commodity Resins
+spend_area_Sales,-0.16903587964271857,0.8444786032518904,spend_area_Sales
+recorded_by_batch,0.15382527381792785,1.166287088084373,invoice recorded automatically
+spend_area_Solvents,0.15188457596164645,1.1640258721109182,spend_area_Solvents
+spend_area_Marketing,-0.13708811178769223,0.8718933986614231,spend_area_Marketing
+spend_area_Specialty Resins,0.12481523044400128,1.1329391010718057,spend_area_Specialty Resins
+spend_area_,0.11764066523882784,1.1248398446812102,spend_area_
+goods_receipt_required,-0.09606357296362232,0.90840626415461,goods receipt required
+spend_area_Additives,0.0914152365746631,1.095723895445529,spend_area_Additives
+gr_before_invoice,-0.07149285939127356,0.9310029254987409,goods already received
+n_rework_before,0.03965598763423415,1.0404527839957014,changes/cancellations before the invoice
+spend_area_Latex & Monomers,0.03689324322099645,1.0375822459867463,spend_area_Latex & Monomers
+"item_category_3-way match, invoice after GR",-0.027504870562678415,0.9728699441178738,"item_category_3-way match, invoice after GR"
+company_infrequent_sklearn,-0.004212754548691775,0.9957961066540275,company_infrequent_sklearn
+gr_based_iv,-0.003967125378363149,0.9960407332680076,GR-based invoice verification
+company_companyID_0003,0.0035717528786097037,1.0035781391890999,company_companyID_0003
+item_category_2-way match,0.003571752878609503,1.0035781391890997,item_category_2-way match
+item_type_Limit,0.003571752878609503,1.0035781391890997,item_type_Limit

@@ -1,0 +1,43 @@
+activity,n_events,n_manual,n_batch,n_vendor,manual_share,n_people
+Create Purchase Order Item,251734,232511,19223,0,0.9236376492647,177
+Record Goods Receipt,314097,229063,85034,0,0.7292747144990241,246
+Record Invoice Receipt,228760,219288,9472,0,0.95859415981815,29
+Clear Invoice,194393,186452,0,7941,0.9591497636231757,23
+Remove Payment Block,57136,41694,15442,0,0.729732567908149,10
+Create Purchase Requisition Item,46592,36355,10237,0,0.7802841689560439,226
+Receive Order Confirmation,32065,27369,4696,0,0.8535474816778419,8
+Change Quantity,21449,21447,2,0,0.9999067555596998,165
+Change Price,12423,12423,0,0,1.0,134
+Delete Purchase Order Item,8875,8875,0,0,1.0,136
+Change Approval for Purchase Order,7541,7541,0,0,1.0,49
+Cancel Invoice Receipt,7096,6373,723,0,0.8981116121758738,19
+Change Delivery Indicator,3289,3289,0,0,1.0,109
+Cancel Goods Receipt,3096,2604,492,0,0.8410852713178295,105
+Release Purchase Order,1610,1610,0,0,1.0,20
+Reactivate Purchase Order Item,543,543,0,0,1.0,51
+Block Purchase Order Item,514,514,0,0,1.0,5
+Cancel Subsequent Invoice,491,491,0,0,1.0,10
+Change Storage Location,415,415,0,0,1.0,56
+Release Purchase Requisition,467,271,196,0,0.5802997858672377,37
+Update Order Confirmation,244,236,8,0,0.9672131147540983,5
+SRM: Complete,1628,194,1434,0,0.11916461916461916,11
+SRM: Awaiting Approval,1628,194,1434,0,0.11916461916461916,11
+SRM: Document Completed,1628,194,1434,0,0.11916461916461916,11
+SRM: Created,1628,188,1440,0,0.11547911547911548,10
+Record Subsequent Invoice,167,162,5,0,0.9700598802395209,9
+Set Payment Block,124,124,0,0,1.0,7
+SRM: In Transfer to Execution Syst.,1765,118,1647,0,0.06685552407932012,11
+SRM: Transfer Failed (E.Sys.),45,45,0,0,1.0,1
+Change Currency,35,35,0,0,1.0,7
+Change Final Invoice Indicator,11,11,0,0,1.0,2
+SRM: Transaction Completed,8,8,0,0,1.0,5
+Change payment term,7,7,0,0,1.0,4
+Change Rejection Indicator,2,2,0,0,1.0,1
+SRM: Held,6,0,6,0,0.0,0
+SRM: Change was Transmitted,1440,0,1440,0,0.0,0
+Vendor creates debit memo,6237,0,0,6237,0.0,0
+SRM: Deleted,188,0,188,0,0.0,0
+Record Service Entry Sheet,164975,0,0,164975,0.0,0
+Vendor creates invoice,219840,0,0,219840,0.0,0
+SRM: Incomplete,6,0,6,0,0.0,0
+SRM: Ordered,1628,0,1628,0,0.0,0

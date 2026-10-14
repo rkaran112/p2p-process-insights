@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P2P Process Insights</title>
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink2: #52514e;
+  --muted: #898781; --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11,11,11,0.10);
+  --s1: #2a78d6; --s2: #eb6834; --rest: #c3c2b7;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink2: #c3c2b7;
+    --muted: #898781; --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
+    --s1: #3987e5; --s2: #d95926; --rest: #4a4a46;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink2: #c3c2b7;
+  --muted: #898781; --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
+  --s1: #3987e5; --s2: #d95926; --rest: #4a4a46;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink);
+       font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.45; }
+main { max-width: 1180px; margin: 0 auto; padding: 28px 16px 48px; }
+h1 { font-size: 1.6rem; margin: 0 0 6px; }
+.lede { color: var(--ink2); max-width: 900px; margin: 0 0 22px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+         margin-bottom: 22px; }
+.tile, .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; }
+.tile { padding: 14px 16px; }
+.tlabel { color: var(--ink2); font-size: .82rem; }
+.tvalue { font-size: 1.7rem; font-weight: 600; margin: 2px 0; }
+.tsub { color: var(--muted); font-size: .8rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr)); gap: 14px; }
+.card { padding: 14px 16px 10px; min-width: 0; }
+.card h2 { font-size: 1rem; margin: 0 0 2px; }
+.card p.sub { color: var(--ink2); font-size: .85rem; margin: 0 0 6px; }
+.chart { width: 100%; height: 320px; }
+details { margin: 4px 0 4px; font-size: .85rem; color: var(--ink2); }
+summary { cursor: pointer; }
+table { border-collapse: collapse; width: 100%; margin-top: 6px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 4px 6px; border-bottom: 1px solid var(--grid); }
+th { color: var(--ink2); font-weight: 600; }
+.findings { background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+            padding: 6px 20px; margin: 22px 0; }
+.findings li { margin: 8px 0; color: var(--ink2); }
+.findings b { color: var(--ink); }
+.scroll { overflow-x: auto; }
+footer { color: var(--muted); font-size: .8rem; margin-top: 26px; }
+</style>
+</head>
+<body>
+<main>
+<h1>Purchase-to-pay process insights</h1>
+<p class="lede">Most invoices that take longer than 60 days to pay are probably not a process failure: 68% of them sit in one spend area (Packaging), which pays at a median of 69 days — the signature of longer agreed terms. The delays the company does control are upstream: invoices wait a median 9.6 days to be booked, and goods receipts are posted late enough to hold payments up.</p>
+<section class="tiles"><div class="tile"><div class="tlabel">PO lines analysed</div><div class="tvalue">251,734</div><div class="tsub">1,595,923 logged steps</div></div>
+<div class="tile"><div class="tlabel">Paid after 60 days</div><div class="tvalue">42%</div><div class="tsub">median 42 days to pay</div></div>
+<div class="tile"><div class="tlabel">Of those, in Packaging</div><div class="tvalue">68%</div><div class="tsub">44% of all lines</div></div>
+<div class="tile"><div class="tlabel">Invoice date → booked</div><div class="tvalue">9.6 days</div><div class="tsub">42% over 14 days</div></div>
+<div class="tile"><div class="tlabel">Invoice booking done by hand</div><div class="tvalue">96%</div><div class="tsub">29 people</div></div>
+<div class="tile"><div class="tlabel">POs raised after the invoice</div><div class="tvalue">3,621</div><div class="tsub">€49.4M</div></div></section>
+
+<div class="grid">
+  <div class="card"><h2>Where the waiting time goes</h2>
+    <p class="sub">Hand-offs between steps, ranked by total days waited across all PO lines.</p>
+    <div id="c_bottlenecks" class="chart"></div>
+    <details><summary>Table</summary><div class="scroll"><table><thead><tr><th>Hand-off</th><th>Times</th><th>Median days</th><th>Share of waiting</th></tr></thead><tbody><tr><td>Record Invoice Receipt → Clear Invoice</td><td>134,955</td><td>36.1</td><td>33.7%</td></tr><tr><td>Record Goods Receipt → Record Invoice Receipt</td><td>112,182</td><td>12.8</td><td>13.9%</td></tr><tr><td>Remove Payment Block → Clear Invoice</td><td>49,424</td><td>25.1</td><td>10.2%</td></tr><tr><td>Create Purchase Order Item → Vendor creates invoice</td><td>103,150</td><td>6.5</td><td>7.0%</td></tr><tr><td>Vendor creates invoice → Record Invoice Receipt</td><td>95,218</td><td>4.7</td><td>6.8%</td></tr><tr><td>Create Purchase Order Item → Record Goods Receipt</td><td>77,206</td><td>12.8</td><td>6.8%</td></tr><tr><td>Record Invoice Receipt → Remove Payment Block</td><td>37,621</td><td>8.0</td><td>4.6%</td></tr><tr><td>Vendor creates invoice → Record Goods Receipt</td><td>110,215</td><td>1.5</td><td>1.6%</td></tr></tbody></table></div></details></div>
+  <div class="card"><h2>Days from invoice booked to paid</h2>
+    <p class="sub">First invoice per PO line. The line marks the EU directive's 60-day default.</p>
+    <div id="c_hist" class="chart"></div>
+    <details><summary>Sensitivity to the threshold</summary><table><thead><tr><th>Threshold (days)</th><th>Share paid after it</th></tr></thead><tbody><tr><td>30</td><td>67.6%</td></tr><tr><td>45</td><td>53.1%</td></tr><tr><td>60</td><td>41.6%</td></tr><tr><td>90</td><td>24.7%</td></tr></tbody></table></details></div>
+  <div class="card"><h2>Lines paid after 60 days, by spend area</h2>
+    <p class="sub">Ten areas with the most slow-paid lines. Hover for the rate.</p>
+    <div id="c_area" class="chart"></div>
+    <details><summary>Table</summary><div class="scroll"><table><thead><tr><th>Spend area</th><th>Lines</th><th>Paid after 60 days</th><th>Median days</th></tr></thead><tbody><tr><td>Packaging</td><td>92,276</td><td>64.9%</td><td>69.0</td></tr><tr><td>Sales</td><td>60,379</td><td>14.6%</td><td>25.3</td></tr><tr><td>Additives</td><td>14,237</td><td>47.1%</td><td>51.4</td></tr><tr><td>Trading & End Products</td><td>18,900</td><td>22.4%</td><td>26.9</td></tr><tr><td>Latex & Monomers</td><td>3,529</td><td>50.7%</td><td>58.0</td></tr><tr><td>(blank)</td><td>2,228</td><td>43.9%</td><td>40.9</td></tr><tr><td>Solvents</td><td>2,011</td><td>48.4%</td><td>54.8</td></tr><tr><td>Specialty Resins</td><td>1,806</td><td>49.2%</td><td>56.0</td></tr><tr><td>CAPEX & SOCS</td><td>5,889</td><td>12.8%</td><td>20.0</td></tr><tr><td>Pigments & Colorants</td><td>2,100</td><td>30.6%</td><td>36.0</td></tr></tbody></table></div></details></div>
+  <div class="card"><h2>Slow payment is concentrated in a few vendors</h2>
+    <p class="sub">Cumulative share of slow-paid lines, vendors sorted most-first.</p>
+    <div id="c_pareto" class="chart"></div>
+    <details><summary>Top 10 vendors</summary><div class="scroll"><table><thead><tr><th>Vendor</th><th>Spend area</th><th>Lines</th><th>Paid after 60d</th><th>Rate</th><th>Median days</th></tr></thead><tbody><tr><td>vendorID_0136</td><td>Packaging</td><td>13813</td><td>13125</td><td>95.0%</td><td>106.0</td></tr><tr><td>vendorID_0120</td><td>Packaging</td><td>13216</td><td>11309</td><td>85.6%</td><td>91.8</td></tr><tr><td>vendorID_0104</td><td>Packaging</td><td>8459</td><td>6613</td><td>78.2%</td><td>69.0</td></tr><tr><td>vendorID_0182</td><td>Packaging</td><td>6699</td><td>6003</td><td>89.6%</td><td>85.7</td></tr><tr><td>vendorID_0103</td><td>Packaging</td><td>5637</td><td>5595</td><td>99.3%</td><td>99.7</td></tr><tr><td>vendorID_0106</td><td>Packaging</td><td>6359</td><td>4107</td><td>64.6%</td><td>64.0</td></tr><tr><td>vendorID_0264</td><td>Packaging</td><td>2973</td><td>1517</td><td>51.0%</td><td>55.9</td></tr><tr><td>vendorID_0278</td><td>Packaging</td><td>1248</td><td>1161</td><td>93.0%</td><td>99.2</td></tr><tr><td>vendorID_0197</td><td>Trading & End Products</td><td>1790</td><td>1107</td><td>61.8%</td><td>50.0</td></tr><tr><td>vendorID_0127</td><td>Sales</td><td>4061</td><td>1000</td><td>24.6%</td><td>24.0</td></tr></tbody></table></div></details></div>
+  <div class="card"><h2>Policy breaches</h2>
+    <p class="sub">PO lines that break a purchase-to-pay control.</p>
+    <div id="c_comp" class="chart"></div>
+    <details><summary>Table</summary><div class="scroll"><table><thead><tr><th>Check</th><th>PO lines</th><th>PO value</th></tr></thead><tbody><tr><td>Vendor invoiced before the PO existed</td><td>3,621</td><td>€49.4M</td></tr><tr><td>Paid before goods were received (3-way match)</td><td>655</td><td>€1.8M</td></tr><tr><td>Invoice booked before goods receipt (invoice-after-GR flow)</td><td>0</td><td>€0</td></tr><tr><td>PO-level invoice on a consignment line</td><td>0</td><td>€0</td></tr></tbody></table></div></details></div>
+  <div class="card"><h2>Weekly manual workload</h2>
+    <p class="sub">Steps done by people, with the week-of-month forecast, backtested 4 weeks ahead.</p>
+    <div id="c_work" class="chart"></div></div>
+</div>
+
+<section class="findings"><ol><li><b>Check the terms before chasing “late” payments.</b> 42% of PO lines are paid after 60 days, but 57 vendors (3% of them) account for 80% of those lines, and Packaging alone accounts for 68%. <i>Action:</i> Pull the contract terms for the 57 vendors. Where terms are 60 days or less, this is real late payment; where they are longer, re-baseline the KPI so it stops flagging agreed behaviour.</li>
+<li><b>Invoices wait to be booked.</b> Median 9.6 days from the vendor's invoice date to booking; 42% wait over two weeks. Booking is 96% manual, done by 29 people (219,288 bookings), although batch jobs already book 9,472. <i>Action:</i> Pilot e-invoicing / OCR capture with the highest-volume vendors and track invoice-date-to-booking weekly, with a target median of 3 days.</li>
+<li><b>Late goods receipts hold payments.</b> When the invoice arrives before the goods receipt is posted, the line is paid after 60 days 7.7 percentage points more often — comparing within the same vendor (589 vendors). Blocked invoices spend 33% of their wait before the block is lifted (median 6.0 days). <i>Action:</i> Set a 2-working-day posting target for goods receipts and report it by site. GR posting is 73% manual across 246 people; batch already posts 85,034, so extend automatic receipt to the vendors that support it.</li>
+<li><b>POs raised after the invoice.</b> 3,621 lines (1.4%, €49.4M) were ordered after the vendor had already invoiced — a median 12 days later. Trading & End Products produces 40% of them; in Real Estate, 52% of lines are retroactive. <i>Action:</i> Enforce “no PO, no pay” in Trading & End Products and Real Estate first, and brief the buyers behind the 83 vendors that make up 80% of cases.</li>
+<li><b>Staff for week 4 of the month, not the average week.</b> Manual work in the fourth week of the month (days 22-28) runs 25% above the other weeks. A forecast that knows this misses by 11% four weeks ahead, against 17% for a flat 4-week average (6 backtest folds). The obvious suspect, month-end close, does not explain it: weeks holding a month end are only 6% busier. <i>Action:</i> Plan the accounts-payable and receiving rota from the week-of-month forecast. Find out what lands in week 4 (a payment-run or reporting cut-off is the likely candidate) before moving work out of it.</li></ol></section>
+<footer>251,734 PO lines from the BPI Challenge 2019 event log (4TU.ResearchData).
+Every number is rendered from <code>outputs/headline_numbers.json</code> produced by <code>python run_all.py</code>.</footer>
+</main>
+<script>
+const D = {"bottlenecks": {"label": ["Record Invoice Receipt \u2192 Clear Invoice", "Record Goods Receipt \u2192 Record Invoice Receipt", "Remove Payment Block \u2192 Clear Invoice", "Create Purchase Order Item \u2192 Vendor creates invoice", "Vendor creates invoice \u2192 Record Invoice Receipt", "Create Purchase Order Item \u2192 Record Goods Receipt", "Record Invoice Receipt \u2192 Remove Payment Block", "Vendor creates invoice \u2192 Record Goods Receipt"], "share": [0.3368, 0.1385, 0.1025, 0.0702, 0.0684, 0.0678, 0.0458, 0.0156], "median": [36.1, 12.8, 25.1, 6.5, 4.7, 12.8, 8.0, 1.5], "n": [134955, 112182, 49424, 103150, 95218, 77206, 37621, 110215]}, "hist": {"x": [2.5, 7.5, 12.5, 17.5, 22.5, 27.5, 32.5, 37.5, 42.5, 47.5, 52.5, 57.5, 62.5, 67.5, 72.5, 77.5, 82.5, 87.5, 92.5, 97.5, 102.5, 107.5, 112.5, 117.5, 122.5, 127.5, 132.5, 137.5, 142.5, 147.5, 152.5, 157.5, 162.5, 167.5, 172.5, 177.5, 182.5, 187.5, 192.5, 197.5], "y": [6204, 6405, 7113, 13193, 24946, 10581, 8532, 10650, 11290, 9589, 5918, 8898, 7747, 5681, 6169, 7886, 4128, 4197, 4546, 4190, 3892, 4412, 3340, 1779, 961, 430, 75, 116, 67, 36, 13, 32, 82, 9, 38, 19, 13, 15, 30, 47]}, "area": {"label": ["Packaging", "Sales", "Additives", "Trading & End Products", "Latex & Monomers", "(blank)", "Solvents", "Specialty Resins", "CAPEX & SOCS", "Pigments & Colorants"], "rate": [0.649, 0.1461, 0.4714, 0.2238, 0.5072, 0.439, 0.4838, 0.4922, 0.1282, 0.3062], "nlate": [59888, 8824, 6712, 4230, 1790, 978, 973, 889, 755, 643], "n": [92276, 60379, 14237, 18900, 3529, 2228, 2011, 1806, 5889, 2100], "median": [69.0, 25.3, 51.4, 26.9, 58.0, 40.9, 54.8, 56.0, 20.0, 36.0]}, "pareto": {"x": [0.0005, 0.0037, 0.007, 0.0102, 0.0134, 0.0166, 0.0198, 0.023, 0.0262, 0.0295, 0.0327, 0.0359, 0.0391, 0.0423, 0.0455, 0.0487, 0.052, 0.0552, 0.0584, 0.0616, 0.0648, 0.068, 0.0712, 0.0745, 0.0777, 0.0809, 0.0841, 0.0873, 0.0905, 0.0937, 0.0969, 0.1002, 0.1034, 0.1066, 0.1098, 0.113, 0.1162, 0.1194, 0.1227, 0.1259, 0.1291, 0.1323, 0.1355, 0.1387, 0.1419, 0.1452, 0.1484, 0.1516, 0.1548, 0.158, 0.1612, 0.1644, 0.1676, 0.1709, 0.1741, 0.1773, 0.1805, 0.1837, 0.1869, 0.1901, 0.1934, 0.1966, 0.1998, 0.203, 0.2062, 0.2094, 0.2126, 0.2159, 0.2191, 0.2223, 0.2255, 0.2287, 0.2319, 0.2351, 0.2384, 0.2416, 0.2448, 0.248, 0.2512, 0.2544, 0.2576, 0.2608, 0.2641, 0.2673, 0.2705, 0.2737, 0.2769, 0.2801, 0.2833, 0.2866, 0.2898, 0.293, 0.2962, 0.2994, 0.3026, 0.3058, 0.3091, 0.3123, 0.3155, 0.3187, 0.3219, 0.3251, 0.3283, 0.3315, 0.3348, 0.338, 0.3412, 0.3444, 0.3476, 0.3508, 0.354, 0.3573, 0.3605, 0.3637, 0.3669, 0.3701, 0.3733, 0.3765, 0.3798, 0.383, 0.3862, 0.3894, 0.3926, 0.3958, 0.399, 0.4022, 0.4055, 0.4087, 0.4119, 0.4151, 0.4183, 0.4215, 0.4247, 0.428, 0.4312, 0.4344, 0.4376, 0.4408, 0.444, 0.4472, 0.4505, 0.4537, 0.4569, 0.4601, 0.4633, 0.4665, 0.4697, 0.473, 0.4762, 0.4794, 0.4826, 0.4858, 0.489, 0.4922, 0.4954, 0.4987, 0.5019, 0.5051, 0.5083, 0.5115, 0.5147, 0.5179, 0.5212, 0.5244, 0.5276, 0.5308, 0.534, 0.5372, 0.5404, 0.5437, 0.5469, 0.5501, 0.5533, 0.5565, 0.5597, 0.5629, 0.5661, 0.5694, 0.5726, 0.5758, 0.579, 0.5822, 0.5854, 0.5886, 0.5919, 0.5951, 0.5983, 0.6015, 0.6047, 0.6079, 0.6111, 0.6144, 0.6176, 0.6208, 0.624, 0.6272, 0.6304, 0.6336, 0.6369, 0.6401, 0.6433, 0.6465, 0.6497, 0.6529, 0.6561, 0.6593, 0.6626, 0.6658, 0.669, 0.6722, 0.6754, 0.6786, 0.6818, 0.6851, 0.6883, 0.6915, 0.6947, 0.6979, 0.7011, 0.7043, 0.7076, 0.7108, 0.714, 0.7172, 0.7204, 0.7236, 0.7268, 0.73, 0.7333, 0.7365, 0.7397, 0.7429, 0.7461, 0.7493, 0.7525, 0.7558, 0.759, 0.7622, 0.7654, 0.7686, 0.7718, 0.775, 0.7783, 0.7815, 0.7847, 0.7879, 0.7911, 0.7943, 0.7975, 0.8007, 0.804, 0.8072, 0.8104, 0.8136, 0.8168, 0.82, 0.8232, 0.8265, 0.8297, 0.8329, 0.8361, 0.8393, 0.8425, 0.8457, 0.849, 0.8522, 0.8554, 0.8586, 0.8618, 0.865, 0.8682, 0.8715, 0.8747, 0.8779, 0.8811, 0.8843, 0.8875, 0.8907, 0.8939, 0.8972, 0.9004, 0.9036, 0.9068, 0.91, 0.9132, 0.9164, 0.9197, 0.9229, 0.9261, 0.9293, 0.9325, 0.9357, 0.9389, 0.9422, 0.9454, 0.9486, 0.9518, 0.955, 0.9582, 0.9614, 0.9646, 0.9679, 0.9711, 0.9743, 0.9775, 0.9807, 0.9839, 0.9871, 0.9904, 0.9936, 0.9968, 1.0], "y": [0.1492, 0.5485, 0.6132, 0.6587, 0.6977, 0.7281, 0.7505, 0.7684, 0.7834, 0.7969, 0.8096, 0.8205, 0.8309, 0.8404, 0.8493, 0.8572, 0.8643, 0.8709, 0.8771, 0.8829, 0.8884, 0.8934, 0.8981, 0.9026, 0.9068, 0.9109, 0.9147, 0.9183, 0.9215, 0.9247, 0.9276, 0.9303, 0.9327, 0.9351, 0.9373, 0.9395, 0.9416, 0.9435, 0.9454, 0.9472, 0.949, 0.9507, 0.9522, 0.9537, 0.9552, 0.9565, 0.9578, 0.9591, 0.9603, 0.9614, 0.9625, 0.9636, 0.9647, 0.9656, 0.9666, 0.9674, 0.9683, 0.9692, 0.97, 0.9708, 0.9716, 0.9723, 0.973, 0.9737, 0.9744, 0.975, 0.9757, 0.9763, 0.9769, 0.9775, 0.9781, 0.9787, 0.9792, 0.9798, 0.9803, 0.9808, 0.9813, 0.9817, 0.9822, 0.9827, 0.9831, 0.9835, 0.9839, 0.9843, 0.9847, 0.985, 0.9854, 0.9857, 0.9861, 0.9864, 0.9867, 0.987, 0.9873, 0.9876, 0.9879, 0.9881, 0.9884, 0.9887, 0.9889, 0.9892, 0.9895, 0.9898, 0.99, 0.9902, 0.9904, 0.9906, 0.9908, 0.991, 0.9912, 0.9914, 0.9916, 0.9918, 0.992, 0.9922, 0.9924, 0.9925, 0.9927, 0.9928, 0.993, 0.9931, 0.9932, 0.9934, 0.9935, 0.9936, 0.9938, 0.9939, 0.994, 0.9942, 0.9943, 0.9945, 0.9946, 0.9947, 0.9949, 0.995, 0.9951, 0.9953, 0.9954, 0.9955, 0.9957, 0.9958, 0.9959, 0.9959, 0.996, 0.9961, 0.9961, 0.9962, 0.9963, 0.9964, 0.9964, 0.9965, 0.9966, 0.9966, 0.9967, 0.9968, 0.9968, 0.9969, 0.997, 0.997, 0.9971, 0.9972, 0.9972, 0.9973, 0.9974, 0.9974, 0.9975, 0.9976, 0.9976, 0.9977, 0.9978, 0.9979, 0.9979, 0.998, 0.9981, 0.9981, 0.9982, 0.9983, 0.9983, 0.9984, 0.9985, 0.9985, 0.9986, 0.9987, 0.9987, 0.9988, 0.9989, 0.9989, 0.999, 0.9991, 0.9991, 0.9992, 0.9993, 0.9994, 0.9994, 0.9995, 0.9996, 0.9996, 0.9997, 0.9998, 0.9998, 0.9999, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]}, "comp": {"label": ["Vendor invoiced before the PO existed", "Paid before goods were received (3-way match)", "Invoice booked before goods receipt (invoice-after-GR flow)", "PO-level invoice on a consignment line"], "n": [3621, 655, 0, 0], "value": [49435293.0, 1753787.0, 0.0, 0.0]}, "work": {"week": ["2018-02-12", "2018-02-19", "2018-02-26", "2018-03-05", "2018-03-12", "2018-03-19", "2018-03-26", "2018-04-02", "2018-04-09", "2018-04-16", "2018-04-23", "2018-04-30", "2018-05-07", "2018-05-14", "2018-05-21", "2018-05-28", "2018-06-04", "2018-06-11", "2018-06-18", "2018-06-25", "2018-07-02", "2018-07-09", "2018-07-16", "2018-07-23", "2018-07-30", "2018-08-06", "2018-08-13", "2018-08-20", "2018-08-27", "2018-09-03", "2018-09-10", "2018-09-17", "2018-09-24", "2018-10-01", "2018-10-08", "2018-10-15", "2018-10-22", "2018-10-29", "2018-11-05", "2018-11-12", "2018-11-19", "2018-11-26", "2018-12-03", "2018-12-10", "2018-12-17"], "actual": [15381, 16744, 13778, 19079, 20977, 20868, 23858, 17555, 18863, 19086, 25227, 14529, 19978, 19207, 27465, 17262, 24168, 18952, 17353, 27546, 21892, 18008, 17013, 28017, 18248, 22353, 16897, 17294, 25552, 26449, 20875, 17448, 30044, 26524, 18940, 18417, 25058, 19972, 23266, 19627, 19252, 28256, 25475, 20526, 18455], "fweek": ["2018-07-09", "2018-07-16", "2018-07-23", "2018-07-30", "2018-08-06", "2018-08-13", "2018-08-20", "2018-08-27", "2018-09-03", "2018-09-10", "2018-09-17", "2018-09-24", "2018-10-01", "2018-10-08", "2018-10-15", "2018-10-22", "2018-10-29", "2018-11-05", "2018-11-12", "2018-11-19", "2018-11-26", "2018-12-03", "2018-12-10", "2018-12-17"], "forecast": [19679.0, 21393.0, 22690.0, 21062.0, 20435.0, 18475.0, 19659.0, 22505.0, 20813.0, 18305.0, 19381.0, 23007.0, 24393.0, 21018.0, 21597.0, 26954.0, 21836.0, 23440.0, 19677.0, 20097.0, 25420.0, 23649.0, 19852.0, 20192.0]}, "gains": {"gradient_boosting": {"x": [0.0, 0.0204, 0.0408, 0.0612, 0.0816, 0.102, 0.1225, 0.1429, 0.1633, 0.1837, 0.2041, 0.2245, 0.2449, 0.2653, 0.2857, 0.3061, 0.3265, 0.3469, 0.3673, 0.3878, 0.4082, 0.4286, 0.449, 0.4694, 0.4898, 0.5102, 0.5306, 0.551, 0.5714, 0.5918, 0.6122, 0.6327, 0.6531, 0.6735, 0.6939, 0.7143, 0.7347, 0.7551, 0.7755, 0.7959, 0.8163, 0.8367, 0.8571, 0.8775, 0.898, 0.9184, 0.9388, 0.9592, 0.9796, 1.0], "y": [0.0, 0.0426, 0.0853, 0.1279, 0.1705, 0.2131, 0.2553, 0.2952, 0.3335, 0.3714, 0.4053, 0.437, 0.4709, 0.5056, 0.5385, 0.5713, 0.6017, 0.6289, 0.6555, 0.6797, 0.7012, 0.7239, 0.7428, 0.7609, 0.7748, 0.7898, 0.8033, 0.8161, 0.8272, 0.8384, 0.8503, 0.8602, 0.8677, 0.8769, 0.8857, 0.8944, 0.9028, 0.9099, 0.9176, 0.927, 0.9342, 0.9423, 0.9498, 0.9562, 0.9616, 0.9702, 0.977, 0.9845, 0.9939, 1.0]}, "logistic": {"x": [0.0, 0.0204, 0.0408, 0.0612, 0.0816, 0.102, 0.1225, 0.1429, 0.1633, 0.1837, 0.2041, 0.2245, 0.2449, 0.2653, 0.2857, 0.3061, 0.3265, 0.3469, 0.3673, 0.3878, 0.4082, 0.4286, 0.449, 0.4694, 0.4898, 0.5102, 0.5306, 0.551, 0.5714, 0.5918, 0.6122, 0.6327, 0.6531, 0.6735, 0.6939, 0.7143, 0.7347, 0.7551, 0.7755, 0.7959, 0.8163, 0.8367, 0.8571, 0.8775, 0.898, 0.9184, 0.9388, 0.9592, 0.9796, 1.0], "y": [0.0, 0.0427, 0.0853, 0.1277, 0.1701, 0.2109, 0.249, 0.2849, 0.3238, 0.3601, 0.3967, 0.4302, 0.4619, 0.4935, 0.525, 0.5556, 0.5864, 0.6171, 0.642, 0.6666, 0.691, 0.7123, 0.734, 0.7531, 0.7695, 0.7839, 0.7943, 0.8072, 0.8199, 0.8284, 0.8388, 0.846, 0.8524, 0.8605, 0.8675, 0.8792, 0.886, 0.8928, 0.9018, 0.9066, 0.917, 0.9271, 0.9344, 0.9434, 0.9509, 0.9575, 0.9664, 0.9733, 0.983, 1.0]}, "random": {"x": [0.0, 0.0204, 0.0408, 0.0612, 0.0816, 0.102, 0.1225, 0.1429, 0.1633, 0.1837, 0.2041, 0.2245, 0.2449, 0.2653, 0.2857, 0.3061, 0.3265, 0.3469, 0.3673, 0.3878, 0.4082, 0.4286, 0.449, 0.4694, 0.4898, 0.5102, 0.5306, 0.551, 0.5714, 0.5918, 0.6122, 0.6327, 0.6531, 0.6735, 0.6939, 0.7143, 0.7347, 0.7551, 0.7755, 0.7959, 0.8163, 0.8367, 0.8571, 0.8775, 0.898, 0.9184, 0.9388, 0.9592, 0.9796, 1.0], "y": [0.0, 0.0212, 0.0412, 0.0613, 0.0821, 0.1031, 0.124, 0.1448, 0.1644, 0.1843, 0.205, 0.226, 0.2463, 0.2669, 0.2877, 0.3076, 0.3282, 0.3478, 0.3682, 0.3891, 0.4102, 0.4305, 0.4507, 0.4704, 0.491, 0.5105, 0.5306, 0.5513, 0.5713, 0.5922, 0.6139, 0.6333, 0.6541, 0.6739, 0.6952, 0.7159, 0.7363, 0.7561, 0.7765, 0.7963, 0.8163, 0.8373, 0.8576, 0.8779, 0.8977, 0.918, 0.9387, 0.9595, 0.9802, 1.0]}, "vendor_history_rule": {"x": [0.0, 0.0204, 0.0408, 0.0612, 0.0816, 0.102, 0.1225, 0.1429, 0.1633, 0.1837, 0.2041, 0.2245, 0.2449, 0.2653, 0.2857, 0.3061, 0.3265, 0.3469, 0.3673, 0.3878, 0.4082, 0.4286, 0.449, 0.4694, 0.4898, 0.5102, 0.5306, 0.551, 0.5714, 0.5918, 0.6122, 0.6327, 0.6531, 0.6735, 0.6939, 0.7143, 0.7347, 0.7551, 0.7755, 0.7959, 0.8163, 0.8367, 0.8571, 0.8775, 0.898, 0.9184, 0.9388, 0.9592, 0.9796, 1.0], "y": [0.0, 0.0425, 0.0835, 0.1261, 0.1687, 0.206, 0.2413, 0.2794, 0.3209, 0.3577, 0.3867, 0.4253, 0.456, 0.4882, 0.5119, 0.5387, 0.5645, 0.5852, 0.6247, 0.6512, 0.6729, 0.7001, 0.7275, 0.7462, 0.7673, 0.7848, 0.7984, 0.8097, 0.8191, 0.8412, 0.8545, 0.8628, 0.8723, 0.8812, 0.8932, 0.8971, 0.9001, 0.9028, 0.9124, 0.9225, 0.93, 0.9363, 0.942, 0.9523, 0.9597, 0.9666, 0.9766, 0.9867, 0.993, 1.0]}}, "sens": {"t": [30, 45, 60, 90], "rate": [0.6756, 0.5315, 0.4163, 0.2467]}, "late_days": 60};
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function layout(extra) {
+  const ax = {gridcolor: css('--grid'), linecolor: css('--axis'), zeroline: false,
+              tickfont: {color: css('--muted'), size: 11}, title: {font: {color: css('--ink2'), size: 12}}};
+  return Object.assign({
+    paper_bgcolor: css('--surface'), plot_bgcolor: css('--surface'),
+    font: {family: 'system-ui, -apple-system, "Segoe UI", sans-serif', color: css('--ink2')},
+    margin: {l: 50, r: 16, t: 8, b: 44},
+    xaxis: Object.assign({}, ax), yaxis: Object.assign({}, ax),
+    hoverlabel: {bgcolor: css('--surface'), bordercolor: css('--axis'), font: {color: css('--ink')}},
+    showlegend: false,
+  }, extra || {});
+}
+const cfg = {displayModeBar: false, responsive: true};
+// Long category labels: wrap them and cap the margin on narrow cards, so the
+// bars keep at least half the width on a phone.
+const narrow = () => window.innerWidth < 640;
+function wrap(t, n) {
+  if (!narrow()) return t;
+  const out = []; let line = '';
+  for (const w of t.split(' ')) {
+    if ((line + ' ' + w).trim().length > n) { out.push(line.trim()); line = w; }
+    else line += ' ' + w;
+  }
+  out.push(line.trim());
+  return out.join('<br>');
+}
+const lm = px => narrow() ? Math.min(px, 150) : px;
+function draw() {
+  const s1 = css('--s1'), s2 = css('--s2'), rest = css('--rest');
+  const b = D.bottlenecks;
+  Plotly.react('c_bottlenecks', [{type: 'bar', orientation: 'h', x: b.share.slice().reverse(),
+    y: b.label.map(t => wrap(t, 24)).reverse(), marker: {color: b.share.map((_, i) => i < 2 ? s1 : rest).reverse()},
+    customdata: b.median.map((m, i) => [m, b.n[i]]).reverse(),
+    hovertemplate: '%{y}<br>%{x:.1%} of all waiting<br>median %{customdata[0]} days, %{customdata[1]:,} times<extra></extra>'}],
+    layout({margin: {l: lm(280), r: 16, t: 8, b: 40}, xaxis: Object.assign(layout().xaxis, {tickformat: '.0%'}),
+            yaxis: Object.assign(layout().yaxis, {automargin: !narrow(), tickfont: {size: 10, color: css('--ink2')}})}), cfg);
+  Plotly.react('c_hist', [{type: 'bar', x: D.hist.x, y: D.hist.y, marker: {color: s1},
+    hovertemplate: '%{x} days: %{y:,} lines<extra></extra>'}],
+    layout({bargap: 0.08, xaxis: Object.assign(layout().xaxis, {title: {text: 'Days (200+ grouped)'}}),
+            yaxis: Object.assign(layout().yaxis, {title: {text: 'PO lines'}}),
+            shapes: [{type: 'line', x0: D.late_days, x1: D.late_days, y0: 0, y1: 1, yref: 'paper',
+                      line: {color: css('--ink2'), width: 1}}]}), cfg);
+  const a = D.area;
+  Plotly.react('c_area', [{type: 'bar', orientation: 'h', x: a.nlate.slice().reverse(), y: a.label.slice().reverse(),
+    marker: {color: a.label.map((_, i) => i === 0 ? s1 : rest).reverse()},
+    customdata: a.n.map((v, i) => [v, a.median[i], a.rate[i]]).reverse(),
+    hovertemplate: '%{y}<br>%{x:,} lines paid after 60 days (%{customdata[2]:.1%} of %{customdata[0]:,})<br>median %{customdata[1]} days<extra></extra>'}],
+    layout({margin: {l: 170, r: 16, t: 8, b: 40}, xaxis: Object.assign(layout().xaxis, {tickformat: ','}),
+            yaxis: Object.assign(layout().yaxis, {automargin: true, tickfont: {size: 11, color: css('--ink2')}})}), cfg);
+  Plotly.react('c_pareto', [
+    {type: 'scatter', mode: 'lines', x: [0, 1], y: [0, 1], line: {color: rest, width: 1}, hoverinfo: 'skip'},
+    {type: 'scatter', mode: 'lines', x: D.pareto.x, y: D.pareto.y, line: {color: s1, width: 2},
+     hovertemplate: 'top %{x:.1%} of vendors<br>%{y:.1%} of slow-paid lines<extra></extra>'}],
+    layout({hovermode: 'x', xaxis: Object.assign(layout().xaxis, {tickformat: '.0%', range: [0, 1]}),
+            yaxis: Object.assign(layout().yaxis, {tickformat: '.0%', range: [0, 1.02]})}), cfg);
+  const c = D.comp;
+  Plotly.react('c_comp', [{type: 'bar', orientation: 'h', x: c.n.slice().reverse(), y: c.label.map(t => wrap(t, 22)).reverse(),
+    marker: {color: c.n.map((v, i) => i === 0 ? s1 : rest).reverse()},
+    hovertemplate: '%{y}<br>%{x:,} PO lines<extra></extra>'}],
+    layout({margin: {l: lm(330), r: 16, t: 8, b: 40},
+            yaxis: Object.assign(layout().yaxis, {automargin: !narrow(), tickfont: {size: 10, color: css('--ink2')}})}), cfg);
+  const w = D.work;
+  Plotly.react('c_work', [
+    {type: 'scatter', mode: 'lines', name: 'Actual', x: w.week, y: w.actual, line: {color: s1, width: 2},
+     hovertemplate: 'week of %{x}<br>%{y:,} manual steps<extra>Actual</extra>'},
+    {type: 'scatter', mode: 'lines', name: 'Forecast (backtest)', x: w.fweek, y: w.forecast, line: {color: s2, width: 2},
+     hovertemplate: 'week of %{x}<br>%{y:,} forecast<extra>Forecast</extra>'}],
+    layout({showlegend: true, legend: {orientation: 'h', y: -0.18, font: {color: css('--ink2')}},
+            hovermode: 'x unified', margin: {l: 56, r: 16, t: 8, b: 60},
+            yaxis: Object.assign(layout().yaxis, {rangemode: 'tozero', tickformat: ','})}), cfg);
+}
+draw();
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', draw);
+let _rt; window.addEventListener('resize', () => { clearTimeout(_rt); _rt = setTimeout(draw, 200); });
+</script>
+</body>
+</html>

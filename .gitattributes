@@ -1,0 +1,5 @@
+# reportlab writes mostly-ASCII PDFs, which git would otherwise treat as text
+# and corrupt with line-ending conversion.
+*.pdf  binary
+*.pptx binary
+*.png  binary

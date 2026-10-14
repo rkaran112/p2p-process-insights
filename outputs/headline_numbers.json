@@ -1,0 +1,687 @@
+{
+  "data_source": {
+    "n_cases": 251734,
+    "n_events": 1595923,
+    "source": "https://doi.org/10.4121/uuid:d06aff4b-79f0-45e6-8ec8-e19730c248f1",
+    "xes_md5": "4eb909242351193a61e1c15b9c3cc814"
+  },
+  "data_quality": {
+    "n_events": 1595923,
+    "n_invalid_ts": 97,
+    "min_ts": "1948-01-26 22:59:00",
+    "max_ts": "2020-04-09 21:59:00",
+    "min_valid_ts": "2017-01-05 22:59:00",
+    "max_valid_ts": "2019-12-05 22:59:00",
+    "n_cases": 251734,
+    "n_activities": 42,
+    "n_people": 607,
+    "n_batch_users": 20,
+    "n_cases_with_invalid_ts": 82,
+    "n_documents": 76349,
+    "n_vendors": 1975
+  },
+  "flows": [
+    {
+      "item_category": "3-way match, invoice before GR",
+      "n_cases": 221010,
+      "po_value_eur": 783697142.0,
+      "median_events": 5.0,
+      "rework_rate": 0.18016831817564816,
+      "share": 0.8779505350886253
+    },
+    {
+      "item_category": "3-way match, invoice after GR",
+      "n_cases": 15182,
+      "po_value_eur": 199908447.0,
+      "median_events": 6.0,
+      "rework_rate": 0.20017125543406666,
+      "share": 0.060309691976451335
+    },
+    {
+      "item_category": "Consignment",
+      "n_cases": 14498,
+      "po_value_eur": 0.0,
+      "median_events": 2.0,
+      "rework_rate": 0.13422541040143468,
+      "share": 0.057592538155354464
+    },
+    {
+      "item_category": "2-way match",
+      "n_cases": 1044,
+      "po_value_eur": 13213158.0,
+      "median_events": 4.0,
+      "rework_rate": 1.0,
+      "share": 0.00414723477956891
+    }
+  ],
+  "variants": {
+    "n_variants": 7438,
+    "top_variant": "Create Purchase Order Item > Vendor creates invoice > Record Goods Receipt > Record Invoice Receipt > Clear Invoice",
+    "top_variant_share": 0.20311122057409806,
+    "variants_for_80pct": 38,
+    "share_in_top_10": 0.6057942113500758,
+    "singleton_variants": 5004
+  },
+  "compliance": {
+    "n_cases": 251734,
+    "any_violation_cases": 4226,
+    "any_violation_share": 0.01678756147361898,
+    "any_violation_value_eur": 51112575.0,
+    "checks": [
+      {
+        "check": "po_after_invoice",
+        "description": "Vendor invoiced before the PO existed",
+        "n_cases": 3621,
+        "share_of_cases": 0.014384230973964582,
+        "po_value_eur": 49435293.0
+      },
+      {
+        "check": "paid_before_goods_receipt",
+        "description": "Paid before goods were received (3-way match)",
+        "n_cases": 655,
+        "share_of_cases": 0.0026019528549977356,
+        "po_value_eur": 1753787.0
+      },
+      {
+        "check": "invoice_before_gr_in_after_gr_flow",
+        "description": "Invoice booked before goods receipt (invoice-after-GR flow)",
+        "n_cases": 0,
+        "share_of_cases": 0.0,
+        "po_value_eur": 0.0
+      },
+      {
+        "check": "invoice_on_consignment",
+        "description": "PO-level invoice on a consignment line",
+        "n_cases": 0,
+        "share_of_cases": 0.0,
+        "po_value_eur": 0.0
+      }
+    ],
+    "by_flow": [
+      {
+        "item_category": "2-way match",
+        "n_cases": 1044,
+        "po_after_invoice_rate": 0.5795019157088123,
+        "paid_before_goods_receipt_rate": 0.0,
+        "invoice_before_gr_in_after_gr_flow_rate": 0.0,
+        "invoice_on_consignment_rate": 0.0,
+        "any_violation_rate": 0.5795019157088123
+      },
+      {
+        "item_category": "3-way match, invoice after GR",
+        "n_cases": 15182,
+        "po_after_invoice_rate": 0.022856013700434726,
+        "paid_before_goods_receipt_rate": 6.586747464102226e-05,
+        "invoice_before_gr_in_after_gr_flow_rate": 0.0,
+        "invoice_on_consignment_rate": 0.0,
+        "any_violation_rate": 0.022921881175075747
+      },
+      {
+        "item_category": "3-way match, invoice before GR",
+        "n_cases": 221010,
+        "po_after_invoice_rate": 0.012076376634541423,
+        "paid_before_goods_receipt_rate": 0.002959142120266051,
+        "invoice_before_gr_in_after_gr_flow_rate": 0.0,
+        "invoice_on_consignment_rate": 0.0,
+        "any_violation_rate": 0.014809284647753496
+      },
+      {
+        "item_category": "Consignment",
+        "n_cases": 14498,
+        "po_after_invoice_rate": 0.0,
+        "paid_before_goods_receipt_rate": 0.0,
+        "invoice_before_gr_in_after_gr_flow_rate": 0.0,
+        "invoice_on_consignment_rate": 0.0,
+        "any_violation_rate": 0.0
+      }
+    ]
+  },
+  "late_payment": {
+    "n_invoices": 211379,
+    "n_outcome_known": 211355,
+    "n_censored": 0,
+    "n_pairing_failed": 24,
+    "n_still_open": 28086,
+    "n_late": 87996,
+    "late_rate": 0.41634217312105226,
+    "late_value_eur": 331450723.75943196,
+    "median_days_to_clear": 42.041666666666664,
+    "p90_days_to_clear": 97.125,
+    "statutory_interest_exposure_eur": 7952293.433388609,
+    "fixed_compensation_exposure_eur": 3519840.0,
+    "total_exposure_eur": 11472133.43338861,
+    "threshold_sensitivity": [
+      {
+        "threshold_days": 30,
+        "late_rate": 0.6755600766482932,
+        "n_late": 142783,
+        "n_known": 211355
+      },
+      {
+        "threshold_days": 45,
+        "late_rate": 0.5314660168910128,
+        "n_late": 112328,
+        "n_known": 211355
+      },
+      {
+        "threshold_days": 60,
+        "late_rate": 0.41634217312105226,
+        "n_late": 87996,
+        "n_known": 211355
+      },
+      {
+        "threshold_days": 90,
+        "late_rate": 0.24669395093562962,
+        "n_late": 52140,
+        "n_known": 211355
+      }
+    ]
+  },
+  "block_decomposition": {
+    "n_lines": 49090,
+    "share_of_invoiced_lines": 0.2322368825663855,
+    "median_days_held": 5.954861111111111,
+    "median_days_after_release": 28.908333333333335,
+    "held_share_of_total_wait": 0.33014838753628223,
+    "share_where_goods_arrived_after_invoice": 0.3014666938276635,
+    "held_days_total": 917953.9916666667
+  },
+  "goods_receipt_effect": {
+    "late_rate_invoice_before_goods": 0.4980203959208158,
+    "n_invoice_before_goods": 16670,
+    "late_rate_goods_before_invoice": 0.4087877194610254,
+    "n_goods_before_invoice": 193998,
+    "raw_gap_pp": 8.923267645979044,
+    "within_vendor_gap_pp": 7.699677655567126,
+    "n_vendors_with_both": 589
+  },
+  "rework": {
+    "share_cases_with_rework": 0.18212875495562778,
+    "rework_events": 72024,
+    "late_rate_with_rework": 0.41691561466062765,
+    "late_rate_without_rework": 0.41624311967329547,
+    "median_days_with_rework": 44.166666666666664,
+    "median_days_without_rework": 41.916666666666664,
+    "late_rate_by_flow": {
+      "2-way match": {
+        "no_rework": null,
+        "rework": 0.5676855895196506
+      },
+      "3-way match, invoice after GR": {
+        "no_rework": 0.30239212544351607,
+        "rework": 0.2143456375838926
+      },
+      "3-way match, invoice before GR": {
+        "no_rework": 0.42204365345478084,
+        "rework": 0.43043478260869567
+      }
+    }
+  },
+  "entry_lag": {
+    "n_lines": 207761,
+    "n_negative_excluded": 2118,
+    "median_days": 9.598611111111111,
+    "p90_days": 45.44861111111111,
+    "share_over_14_days": 0.41526080448207314,
+    "share_over_30_days": 0.21199358878711597,
+    "slowest_areas": [
+      {
+        "spend_area": "Marketing",
+        "median_days": 26.51736111111111,
+        "n_lines": 1521
+      },
+      {
+        "spend_area": "Trading & End Products",
+        "median_days": 22.42013888888889,
+        "n_lines": 18179
+      },
+      {
+        "spend_area": "Logistics",
+        "median_days": 20.509722222222223,
+        "n_lines": 1889
+      },
+      {
+        "spend_area": "Others",
+        "median_days": 17.39097222222222,
+        "n_lines": 2267
+      },
+      {
+        "spend_area": "Sales",
+        "median_days": 16.588194444444444,
+        "n_lines": 59300
+      }
+    ]
+  },
+  "po_after_invoice": {
+    "n_lines": 3621,
+    "n_vendors": 571,
+    "vendors_for_80pct": 83,
+    "median_days_po_after_invoice": 12.347916666666666,
+    "by_spend_area": [
+      {
+        "spend_area": "Trading & End Products",
+        "n_lines": 22292,
+        "n_hits": 1463,
+        "rate": 0.06562892517495066,
+        "share_of_hits": 0.404032035349351
+      },
+      {
+        "spend_area": "Sales",
+        "n_lines": 65864,
+        "n_hits": 405,
+        "rate": 0.00614903437386129,
+        "share_of_hits": 0.11184755592377796
+      },
+      {
+        "spend_area": "Others",
+        "n_lines": 2635,
+        "n_hits": 385,
+        "rate": 0.1461100569259962,
+        "share_of_hits": 0.10632421982877659
+      },
+      {
+        "spend_area": "Packaging",
+        "n_lines": 109199,
+        "n_hits": 349,
+        "rate": 0.003195999963369628,
+        "share_of_hits": 0.0963822148577741
+      },
+      {
+        "spend_area": "Real Estate",
+        "n_lines": 584,
+        "n_hits": 305,
+        "rate": 0.5222602739726028,
+        "share_of_hits": 0.08423087544877106
+      },
+      {
+        "spend_area": "Logistics",
+        "n_lines": 5242,
+        "n_hits": 248,
+        "rate": 0.047310186951545215,
+        "share_of_hits": 0.06848936757801712
+      }
+    ]
+  },
+  "vendor_concentration": {
+    "n_vendors_with_known_outcomes": 1867,
+    "vendors_for_80pct_of_late": 57,
+    "share_of_vendors_for_80pct": 0.03053026245313337,
+    "top10_share_of_late": 0.5856743488340379,
+    "top10": [
+      {
+        "vendor": "vendorID_0136",
+        "main_spend_area": "Packaging",
+        "n_invoices": 13813,
+        "n_late": 13125,
+        "late_rate": 0.9501918482588866,
+        "median_days_to_clear": 105.95833333333333
+      },
+      {
+        "vendor": "vendorID_0120",
+        "main_spend_area": "Packaging",
+        "n_invoices": 13216,
+        "n_late": 11309,
+        "late_rate": 0.8557052058111381,
+        "median_days_to_clear": 91.75
+      },
+      {
+        "vendor": "vendorID_0104",
+        "main_spend_area": "Packaging",
+        "n_invoices": 8459,
+        "n_late": 6613,
+        "late_rate": 0.7817708949048351,
+        "median_days_to_clear": 68.95833333333333
+      },
+      {
+        "vendor": "vendorID_0182",
+        "main_spend_area": "Packaging",
+        "n_invoices": 6699,
+        "n_late": 6003,
+        "late_rate": 0.8961038961038961,
+        "median_days_to_clear": 85.70833333333333
+      },
+      {
+        "vendor": "vendorID_0103",
+        "main_spend_area": "Packaging",
+        "n_invoices": 5637,
+        "n_late": 5595,
+        "late_rate": 0.9925492283129325,
+        "median_days_to_clear": 99.66666666666667
+      },
+      {
+        "vendor": "vendorID_0106",
+        "main_spend_area": "Packaging",
+        "n_invoices": 6359,
+        "n_late": 4107,
+        "late_rate": 0.645856266708602,
+        "median_days_to_clear": 63.958333333333336
+      },
+      {
+        "vendor": "vendorID_0264",
+        "main_spend_area": "Packaging",
+        "n_invoices": 2973,
+        "n_late": 1517,
+        "late_rate": 0.510258997645476,
+        "median_days_to_clear": 55.916666666666664
+      },
+      {
+        "vendor": "vendorID_0278",
+        "main_spend_area": "Packaging",
+        "n_invoices": 1248,
+        "n_late": 1161,
+        "late_rate": 0.9302884615384616,
+        "median_days_to_clear": 99.20833333333333
+      },
+      {
+        "vendor": "vendorID_0197",
+        "main_spend_area": "Trading & End Products",
+        "n_invoices": 1790,
+        "n_late": 1107,
+        "late_rate": 0.6184357541899441,
+        "median_days_to_clear": 49.958333333333336
+      },
+      {
+        "vendor": "vendorID_0127",
+        "main_spend_area": "Sales",
+        "n_invoices": 4061,
+        "n_late": 1000,
+        "late_rate": 0.2462447672986949,
+        "median_days_to_clear": 23.958333333333332
+      }
+    ]
+  },
+  "automation": {
+    "manual_events": 1040646,
+    "manual_share_of_company_events": 0.8694997547694624,
+    "manual_events_per_case": 4.133911191972479,
+    "candidates": [
+      {
+        "activity": "Create Purchase Order Item",
+        "n_manual": 232511,
+        "n_batch": 19223,
+        "manual_share": 0.9236376492647,
+        "n_people": 177
+      },
+      {
+        "activity": "Record Goods Receipt",
+        "n_manual": 229063,
+        "n_batch": 85034,
+        "manual_share": 0.7292747144990241,
+        "n_people": 246
+      },
+      {
+        "activity": "Record Invoice Receipt",
+        "n_manual": 219288,
+        "n_batch": 9472,
+        "manual_share": 0.95859415981815,
+        "n_people": 29
+      },
+      {
+        "activity": "Remove Payment Block",
+        "n_manual": 41694,
+        "n_batch": 15442,
+        "manual_share": 0.729732567908149,
+        "n_people": 10
+      },
+      {
+        "activity": "Create Purchase Requisition Item",
+        "n_manual": 36355,
+        "n_batch": 10237,
+        "manual_share": 0.7802841689560439,
+        "n_people": 226
+      },
+      {
+        "activity": "Receive Order Confirmation",
+        "n_manual": 27369,
+        "n_batch": 4696,
+        "manual_share": 0.8535474816778419,
+        "n_people": 8
+      },
+      {
+        "activity": "Change Quantity",
+        "n_manual": 21447,
+        "n_batch": 2,
+        "manual_share": 0.9999067555596998,
+        "n_people": 165
+      },
+      {
+        "activity": "Cancel Invoice Receipt",
+        "n_manual": 6373,
+        "n_batch": 723,
+        "manual_share": 0.8981116121758738,
+        "n_people": 19
+      }
+    ]
+  },
+  "model": {
+    "n_train": 132484,
+    "n_test": 78871,
+    "train_late_rate": 0.37941185350683854,
+    "test_late_rate": 0.47837608246376995,
+    "test_from": "2018-09-01",
+    "models": {
+      "vendor_history_rule": {
+        "auc": 0.8249349710068921,
+        "average_precision": 0.8308365763169769,
+        "review_share": 0.1,
+        "n_reviewed": 7887,
+        "precision": 0.9661468238874097,
+        "capture": 0.20196130400212034,
+        "max_possible_capture": 0.20903790087463556,
+        "lift": 2.0196386468811
+      },
+      "logistic": {
+        "auc": 0.8209910259103701,
+        "average_precision": 0.8423565524486967,
+        "review_share": 0.1,
+        "n_reviewed": 7887,
+        "precision": 0.9885888170406999,
+        "capture": 0.20665253114232707,
+        "max_possible_capture": 0.20903790087463556,
+        "lift": 2.0665515130881804
+      },
+      "gradient_boosting": {
+        "auc": 0.8417249434181002,
+        "average_precision": 0.862279720250211,
+        "review_share": 0.1,
+        "n_reviewed": 7887,
+        "precision": 0.99898567262584,
+        "capture": 0.20882586800954148,
+        "max_possible_capture": 0.20903790087463556,
+        "lift": 2.088285157319709
+      },
+      "random": {
+        "auc": 0.5016398828247974,
+        "average_precision": 0.480442457857153,
+        "review_share": 0.1,
+        "n_reviewed": 7887,
+        "precision": 0.4835805756307848,
+        "capture": 0.10108666843360721,
+        "max_possible_capture": 0.20903790087463556,
+        "lift": 1.0108795012079415
+      }
+    },
+    "best_model": "gradient_boosting",
+    "top_drivers": [
+      {
+        "label": "vendor's past late rate",
+        "odds_ratio": 9.998220775494019
+      },
+      {
+        "label": "spend_area_infrequent_sklearn",
+        "odds_ratio": 0.1317310690633483
+      },
+      {
+        "label": "spend_area_Titanium Dioxides",
+        "odds_ratio": 3.67068653243424
+      },
+      {
+        "label": "document_type_Framework order",
+        "odds_ratio": 0.3674472587988224
+      },
+      {
+        "label": "document_type_Standard PO",
+        "odds_ratio": 2.5394969098889906
+      },
+      {
+        "label": "item_type_Subcontracting",
+        "odds_ratio": 2.237188524535221
+      },
+      {
+        "label": "item_type_Service",
+        "odds_ratio": 0.48754744488085117
+      },
+      {
+        "label": "days since the PO was raised",
+        "odds_ratio": 0.5135493068785719
+      },
+      {
+        "label": "spend_area_Logistics",
+        "odds_ratio": 1.7700397765726457
+      },
+      {
+        "label": "spend_area_CAPEX & SOCS",
+        "odds_ratio": 0.5807725062900866
+      }
+    ],
+    "permutation_importance": [
+      {
+        "label": "vendor's past late rate",
+        "auc_drop": 0.29940472547914154
+      },
+      {
+        "label": "days since the PO was raised",
+        "auc_drop": 0.062149457894752014
+      },
+      {
+        "label": "vendor's past invoice volume (log)",
+        "auc_drop": 0.006922000741637439
+      },
+      {
+        "label": "spend_area",
+        "auc_drop": 0.003741226560510532
+      },
+      {
+        "label": "invoice recorded automatically",
+        "auc_drop": 0.002364767272582983
+      },
+      {
+        "label": "PO line value (log)",
+        "auc_drop": 0.0017653158040944101
+      },
+      {
+        "label": "item_type",
+        "auc_drop": 0.0010365213330476204
+      },
+      {
+        "label": "invoice value (log)",
+        "auc_drop": 0.0007018813866741894
+      }
+    ]
+  },
+  "workload": {
+    "window_start": "2018-02-12",
+    "window_end": "2018-12-17",
+    "n_weeks": 45,
+    "median_manual_events_per_week": 19627.0,
+    "median_active_people_per_week": 192.0,
+    "manual_events_per_person_week": 96.20304568527919,
+    "horizon_weeks": 4,
+    "n_folds": 6,
+    "mape_by_method": {
+      "moving_average_week_of_month": 0.11231548450537132,
+      "moving_average_4w": 0.1663221805316559,
+      "holt_damped": 0.16844588927272194,
+      "moving_average_month_end": 0.1689628899217692,
+      "naive_last_week": 0.23019854712256058
+    },
+    "best_method": "moving_average_week_of_month",
+    "best_mape": 0.11231548450537132,
+    "month_end_lift": 1.0608401400879217,
+    "n_month_end_weeks": 10,
+    "week_of_month_effect": {
+      "1": 1.0834540326673987,
+      "2": 0.9046547017619527,
+      "3": 0.9096155698858798,
+      "4": 1.1687918244429956,
+      "5": 0.840189480256633
+    },
+    "busiest_week_of_month": 4,
+    "busiest_week_lift": 1.250742410664635,
+    "typical_miss_people": 22.914201922447436
+  },
+  "figures": {
+    "flows": "flows.png",
+    "compliance": "compliance.png",
+    "days_to_clear": "days_to_clear.png",
+    "bottlenecks": "bottlenecks.png",
+    "vendor_pareto": "vendor_pareto.png",
+    "goods_receipt_effect": "goods_receipt_effect.png",
+    "rework_effect": "rework_effect.png",
+    "gains": "gains.png",
+    "workload": "workload.png"
+  },
+  "headline": {
+    "n_po_lines": 251734,
+    "n_events": 1595923,
+    "n_vendors": 1975,
+    "total_po_value_eur": 996818747.0,
+    "late_days": 60,
+    "late_rate": 0.41634217312105226,
+    "n_late": 87996,
+    "median_days_to_clear": 42.041666666666664,
+    "late_value_eur": 331450723.75943196,
+    "exposure_upper_bound_eur": 11472133.43338861,
+    "top_late_area": "Packaging",
+    "top_late_area_share_of_late": 0.6805763898359016,
+    "top_late_area_share_of_lines": 0.43659246291783965,
+    "top_late_area_median_days": 69.04166666666667,
+    "top_late_area_late_rate": 0.6490094932593524,
+    "entry_lag_median_days": 9.598611111111111,
+    "entry_lag_share_over_14": 0.41526080448207314,
+    "invoice_recording_manual_share": 0.95859415981815,
+    "invoice_recording_people": 29,
+    "gr_gap_raw_pp": 8.923267645979044,
+    "gr_gap_within_vendor_pp": 7.699677655567126,
+    "best_model_max_capture": 0.20903790087463556,
+    "rule_auc": 0.8249349710068921,
+    "held_share_of_blocked_wait": 0.33014838753628223,
+    "median_days_held": 5.954861111111111,
+    "median_days_after_release": 28.908333333333335,
+    "po_after_invoice_lines": 3621,
+    "po_after_invoice_share": 0.014384230973964582,
+    "po_after_invoice_value_eur": 49435293.0,
+    "any_violation_share": 0.01678756147361898,
+    "vendors_for_80pct_of_late": 57,
+    "share_of_vendors_for_80pct": 0.03053026245313337,
+    "late_rate_invoice_before_goods": 0.4980203959208158,
+    "late_rate_goods_before_invoice": 0.4087877194610254,
+    "late_rate_with_rework": 0.41691561466062765,
+    "late_rate_without_rework": 0.41624311967329547,
+    "best_model": "gradient_boosting",
+    "best_model_auc": 0.8417249434181002,
+    "best_model_capture": 0.20882586800954148,
+    "best_model_precision": 0.99898567262584,
+    "rule_capture": 0.20196130400212034,
+    "review_share": 0.1,
+    "manual_events_per_line": 4.133911191972479,
+    "workload_mape": 0.11231548450537132,
+    "workload_method": "moving_average_week_of_month",
+    "n_variants": 7438,
+    "top_variant_share": 0.20311122057409806
+  },
+  "machine": {
+    "python": "3.13.2",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+    "cpu_count_logical": 4,
+    "runtime_seconds": 81.3,
+    "seed": 20261014,
+    "pkg_numpy": "2.4.4",
+    "pkg_pandas": "3.0.2",
+    "pkg_duckdb": "1.5.5",
+    "pkg_sklearn": "1.8.0",
+    "pkg_statsmodels": "0.14.6",
+    "pkg_matplotlib": "3.10.8"
+  }
+}

@@ -1,0 +1,16 @@
+feature,auc_drop,label
+vendor_late_rate,0.29940472547914154,vendor's past late rate
+po_age_at_invoice_days,0.062149457894752014,days since the PO was raised
+log_vendor_invoices,0.006922000741637439,vendor's past invoice volume (log)
+spend_area,0.003741226560510532,spend_area
+recorded_by_batch,0.002364767272582983,invoice recorded automatically
+log_po_value,0.0017653158040944101,PO line value (log)
+item_type,0.0010365213330476204,item_type
+log_invoice_value,0.0007018813866741894,invoice value (log)
+gr_before_invoice,0.0004910524728880169,goods already received
+n_rework_before,0.00016224008891833433,changes/cancellations before the invoice
+item_category,5.1883934266509314e-05,item_category
+document_type,1.4891716997274726e-05,document_type
+gr_based_iv,6.942932615716657e-06,GR-based invoice verification
+company,0.0,company
+goods_receipt_required,0.0,goods receipt required
